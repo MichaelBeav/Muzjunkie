@@ -1,0 +1,4 @@
+#### REQUIREMENTS
+
+*   web.py
+*   simplejson
