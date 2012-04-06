@@ -9,7 +9,9 @@
   },
   "dependencies": {
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "requirejs": ">=1.0.7"
+  },
   "optionalDependencies": {},
   "engines": {
     "node": "*"
