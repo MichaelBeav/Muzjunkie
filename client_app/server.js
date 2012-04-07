@@ -26,3 +26,5 @@ rebuildProject();
 var server = connect()
   .use(connect.static('public'))
   .listen(8000);
+
+console.log('Listening on 8000...');
