@@ -1,5 +1,6 @@
 var fs = require('fs');
 var requirejs = require('requirejs');
+var connect = require('connect');
 
 function rebuildProject() {
   var config = JSON.parse(fs.readFileSync('build.js', 'utf8'));
@@ -12,7 +13,7 @@ function rebuildProject() {
 }
 
 var timeout;
-var watcher = fs.watch('src', function watchDir (action, fileName) {
+var watcher = fs.watch('src', function watchDir(action, fileName) {
   if (fileName.slice(-3) !== '.js') {
     return;
   }
@@ -20,3 +21,8 @@ var watcher = fs.watch('src', function watchDir (action, fileName) {
   timeout = setTimeout(rebuildProject, 100);
 });
 
+// Rebuild project and start serving
+rebuildProject();
+var server = connect()
+  .use(connect.static('public'))
+  .listen(8000);

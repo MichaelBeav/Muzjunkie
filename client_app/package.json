@@ -8,10 +8,10 @@
     "url": "git@ssh.github.com:MichaelBeav/Muzjunkie.git"
   },
   "dependencies": {
-    "jqueryify": ">=0.0.3"
   },
   "devDependencies": {
-    "requirejs": ">=1.0.7"
+    "requirejs": ">=1.0.7",
+    "connect": ">=2.1.0"
   },
   "optionalDependencies": {},
   "engines": {

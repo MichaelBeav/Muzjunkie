@@ -6,10 +6,5 @@
             "name": "main"
         }
     ],
-    "packages": [{
-        "name": "jqueryify",
-        "main": "index.js",
-        "location": "../../node_modules/jqueryify"
-    }],
     "optimize": "none"
 }
