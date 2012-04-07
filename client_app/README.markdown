@@ -23,3 +23,8 @@ Then open your browser (or even several ones) and point them to url `localhost:1
 
 ### Code standart
 [http://nodeguide.com/style.html](nodejs code standart)
+
+### Dev server
+Dev server watches `src` dir and recompiles scripts on every change. It also serves all content from `public` dir on `localhost:8000`. To run it, do:
+
+    ./server
