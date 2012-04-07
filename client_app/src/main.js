@@ -1,4 +1,3 @@
-window.module = {}; // for commonjs compatibility
-require(["lib/jquery"], function () {
-  console.log($);
+require([ "order!lib/jquery"
+        , "order!lib/bootstrap.min.js"], function () {
 });

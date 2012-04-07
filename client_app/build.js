@@ -6,5 +6,8 @@
             "name": "main"
         }
     ],
+    "paths": {
+        "order": "lib/order"
+    },
     "optimize": "none"
 }
