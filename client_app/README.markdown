@@ -21,3 +21,5 @@ Then open your browser (or even several ones) and point them to url `localhost:1
 
     buster test
 
+### Code standart
+[http://nodeguide.com/style.html](nodejs code standart)
