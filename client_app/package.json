@@ -12,7 +12,9 @@
   "devDependencies": {
     "requirejs": ">=1.0.7",
     "connect": ">=2.1.0",
-    "hogan.js": ">=2.0.0"
+    "hogan.js": ">=2.0.0",
+    "mocha": ">=1.0.0",
+    "expect.js": ">=0.0.0"
   },
   "optionalDependencies": {},
   "engines": {
