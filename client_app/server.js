@@ -29,6 +29,9 @@ var watcher = fs.watch('src', function watchDir(action, fileName) {
 rebuildProject();
 var server = connect()
   .use(connect.static('public'))
+  .use('/test', connect.static('test'))
+  .use('/node_modules', 
+        connect.static('node_modules')) // use them for tests only!
   .listen(8000);
 
 console.log('Listening on 8000...');
