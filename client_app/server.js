@@ -2,6 +2,9 @@ var fs = require('fs');
 var requirejs = require('requirejs');
 var connect = require('connect');
 var hoganBuild = require('./hoganbuild');
+var watch = require('nodewatch');
+
+WATCHED = [ 'js', 'mustache' ]; // watched extensions
 
 function rebuildProject() {
   // r.js build
@@ -17,8 +20,9 @@ function rebuildProject() {
 }
 
 var timeout;
-var watcher = fs.watch('src', function watchDir(action, fileName) {
-  if (fileName.slice(-3) !== '.js') {
+watch.add('./src', true).onChange(function onChange(fileName) {
+  var ext = fileName.split('.').slice(-1)[0];
+  if (WATCHED.indexOf(ext) === -1) {
     return;
   }
   clearTimeout(timeout);
