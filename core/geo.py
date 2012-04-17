@@ -1,31 +1,24 @@
+# -*- coding: utf-8 -*-
 from RESTful import RESTful
 
-class MJBand(RESTful):
+class MJCountry(RESTful):
     
     def __init__(self, db, base_url=""):
 	#Init RESTful superclass
-	super(MJBand, self).__init__(base_url = base_url)    
+	super(MJCountry, self).__init__(base_url = base_url)    
         self.db = db
         
         #References to DB Keys:
-        self.main_key_prefix = "/band/"
+        self.main_key_prefix = "/country/"
         self.resource_prefix = "profile:"
 	
 	#Resource Object structure. Keep the fields in model for consistence:
 	self.resource_attributes = {
-	    'band_name': '',
-	    'bio': '',
-	    'primary_genre': '',
-	    'genres': [], 
-	    'status': '',
-	    'country': {},
-	    'region': '',
-	    'city': '',
-	    'members': [],
-	    'avatar': '',
-	    'similar_artists': [],
-	    'raider': '',
-	    'rid': ''
+	    'name': '',
+	    'alpha2_name': '',
+	    'official_name': '',
+	    'regions': [],
+	    'rid': '',
 	}
 	
     ##RESTful implementation:
@@ -33,19 +26,27 @@ class MJBand(RESTful):
     def get_featured(cls):
 	pass
     
+    #Export db keys for scripting
+    @classmethod
+    def get_db_keys_layout(cls):
+	db_keys = {
+	    'main_key_prefix': cls.main_key_prefix,
+	    'resource_prefix': cls.resource_prefix,
+	    'resource_attributes': cls.resource_attributes
+	}
+	
+	return db_keys
+        
     def get_resource(self, name):
-    
-	#Get main band profile:
-	main_profile = self.db.get_hash("%s%s%s" % (self.main_key_prefix, self.resource_prefix, name))
-	if not len(main_profile):
-	    return self.not_exists_return
+	resource_key = "%s%s%s" % (self.main_key_prefix, self.resource_prefix, name)
+	main_profile = self.db.get_hash(resource_key)
 	
 	#Extend result with resource id:
 	main_profile['rid'] = "%s%s%s" % (self.base_url, self.main_key_prefix, name)
 	
-	#Get Secondary genres:
-	sg = MJSecondaryGenres(self.db, base_url=self.base_url)
-	main_profile['genres'] = sg.get_resource(name)
+	#Get regions for Country:
+	regions = MJCountryRegions(self.db, base_url=self.base_url)
+	main_profile['regions'] = regions.get_resource(name)
 	
 	#Apply self.resource_attributes dict to the result to keep consisten output even if the fields are absent uneder object returned from DB
 	resource =  dict(self.resource_attributes.items() + main_profile.items())
@@ -59,23 +60,27 @@ class MJBand(RESTful):
 	return {'result': 'ok'}
     
     def put_object(self, name, data):
-	pass
+	resource_key = "%s%s%s" % (self.main_key_prefix, self.resource_prefix, name)
+	
+	if (self.db.set_hash(resource_key, data)):
+	    return self.get_resource(name)
+	else:
+	    return {}
 
-
-class MJSecondaryGenres(RESTful):
+class MJCountryRegions(RESTful):
     
     def __init__(self, db, base_url=""):
 	#Init RESTful superclass
-	super(MJSecondaryGenres, self).__init__(base_url=base_url)
+	super(MJCountryRegions, self).__init__(base_url = base_url)    
         self.db = db
         
         #References to DB Keys:
-        self.main_key_prefix = "/band/"
-        self.resource_prefix = "secondary_genres:"
+        self.main_key_prefix = "/country/"
+        self.resource_prefix = "regions:"
 	
-	#!!Fixme: this should come from MJSecondaryGenre object classmethod when will be created
-	self.sigleton_object_main_key = "/secondary_genre/"
-
+	#!!Fixme: this should come from MJCountryRegion object classmethod when will be created
+	self.sigleton_object_main_key = "/country_region/"	
+	
     ##RESTful implementation:
     @classmethod
     def get_featured(cls):
@@ -96,8 +101,11 @@ class MJSecondaryGenres(RESTful):
 	pass
     
     def delete_object(self, name):
-	
 	return {'result': 'ok'}
     
     def put_object(self, name, data):
-	pass
+	resource_key = "%s%s%s" % (self.main_key_prefix, self.resource_prefix, name)
+	if self.db.store_set(resource_key, data):
+	    return self.get_resource(name)
+	else:
+	    return {}

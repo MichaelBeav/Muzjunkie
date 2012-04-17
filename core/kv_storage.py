@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 class KVStorage(object):
     
@@ -38,7 +39,14 @@ class KVStorage(object):
     def get_hash(self, key):
 	return self.db.get_hash(key)
 
+    #Store Hash. Some DB supports Hashes nativaly (i.e. - Redis). Other wrappers will need to implement this behaviour
+    def set_hash(self, key, data):
+	return self.db.set_hash(key, data)
+
     #Get set. Some DB supports sets nativaly (i.e. - Redis). Other wrappers will need to implement this behaviour
     def get_set(self, key):
 	return self.db.get_set(key)
-	
+    
+    #Store set. Some DB supports sets nativaly (i.e. - Redis). Other wrappers will need to implement this behaviour
+    def store_set(self, key, data):
+	return self.db.store_set(key, data)
