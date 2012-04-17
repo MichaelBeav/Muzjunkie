@@ -9,6 +9,7 @@ WATCHED = [ 'js', 'mustache' ]; // watched extensions
 function rebuildProject() {
   // r.js build
   var config = JSON.parse(fs.readFileSync('build.js', 'utf8'));
+  hoganBuild.run();
   requirejs.optimize(config, function buildResponse(buildResponse) {
     //buildResponse is just a text output of the modules
     //included. Load the built file for the contents.
@@ -16,7 +17,6 @@ function rebuildProject() {
     console.log(buildResponse);
   });
 
-  hoganBuild.run();
 }
 
 var timeout;
