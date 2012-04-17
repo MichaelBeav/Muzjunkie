@@ -8,7 +8,7 @@ define(['require'
       , 'lib/underscore'
       , 'lib/jquery'], function (require) {
 var o = {
-  jQuery: require('lib/jquery'),
+  jQuery: window.$,
   _: require('lib/underscore')
 };
 (function(){
