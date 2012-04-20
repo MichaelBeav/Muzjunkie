@@ -4,17 +4,22 @@ define([
     
     var Router = Backbone.Router.extend({
       routes: {
+        'bands': 'bandList',
         'bands/:id': 'band'
       },
 
-      band: function (id) {
+      bandList: function bandListRoute() {
+        console.log('Show me band list');
+      },
+
+      band: function bandRoute(id) {
         console.log('Show me the band #' + id);
       }
     });
 
-    new Router();
+    var router = new Router();
     Backbone.history.start();
 
-    return Router;
+    return router;
 
 });
