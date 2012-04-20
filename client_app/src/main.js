@@ -5,5 +5,4 @@ require([
   ], function (Index) {
 
   var index = new Index({ el : 'body' });
-  index.render();
 });
