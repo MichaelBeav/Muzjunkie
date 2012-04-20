@@ -1,8 +1,9 @@
 require([
-    "view/index"
-  , "order!lib/jquery"
+    "order!lib/jquery"
   , "order!lib/bootstrap.min.js"
-  ], function (Index) {
+  , "view/index"
+  , "router"
+  ], function (_, _, Index) {
 
   var index = new Index({ el : 'body' });
 });
