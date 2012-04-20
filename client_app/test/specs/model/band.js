@@ -8,7 +8,7 @@ define([
     var band;
 
     function createBand() {
-      return new Band();
+      return new Band.Model();
     }
 
     beforeEach(function beforeTest() {

@@ -1,5 +1,6 @@
 define([], function  () {
   return {
-    bandRoot: '/band'
+    bandRoot: '/bands/',
+    bandList: '/bands'
   };
 });

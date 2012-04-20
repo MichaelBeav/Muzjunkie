@@ -5,5 +5,5 @@ require([
   , "router"
   ], function (_, _, Index) {
 
-  var index = new Index({ el : 'body' });
+  var index = new Index({ el : 'body.app' });
 });

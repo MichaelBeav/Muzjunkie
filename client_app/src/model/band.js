@@ -3,10 +3,20 @@ define([
   , 'datasource'
   ], function  (Backbone, datasource) {
 
-  return Backbone.Model.extend({
+  var exports = {};
+
+  exports.Model = Backbone.Model.extend({
 
     urlRoot: datasource.bandRoot
 
   });
+
+  exports.Collection = Backbone.Collection.extend({
+
+    url: datasource.bandList
+
+  });
+
+  return exports;
   
 });
