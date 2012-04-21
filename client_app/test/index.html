@@ -6,6 +6,8 @@
   <script src="build/lib/require.js" data-main="build/main"></script>
   
   <script src="node_modules/expect.js/expect.js"></script>
+  <script src="node_modules/sinon/lib/sinon.js"></script>
+  <script src="test/lib/sinon-server.js"></script>
   <script src="node_modules/mocha/mocha.js"></script>
 
   <script>
@@ -15,11 +17,12 @@
       '/test/specs/temp/mocha_test.js'
     , '/test/specs/temp/module_validness.js'
     , '/test/specs/model/band.js'
+    , '/test/specs/view/band.js'
     ];
 
     require(specs, function() {
       mocha
-        .run();
+        .run().globals([ 'XMLHttpRequest' ]);
     });
   </script>
 </head>
