@@ -1,13 +1,16 @@
 {
   "band_name": "Megalive",
-  "bio": "Once upon a time",
+  "bio": "Once upon a time...",
   "primary_genre": "love vibrations",
-  "genres": [], 
-  "status": "",
+  "genres": [ "ski", "hypertrolling" ], 
+  "status": "rocking hard in a tour!",
   "country": {},
   "region": "",
   "city": "",
-  "members": [],
+  "members": [
+    "Vasya Podlaty [guitar-drone]",
+    "Ksy Pruha [valkiria]"
+  ],
   "avatar": "",
   "similar_artists": [],
   "raider": "",
