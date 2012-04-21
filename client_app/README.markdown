@@ -7,7 +7,7 @@ And others, listed in `package.json`. In order to install them, run in `client_a
 
     npm install .
 
-### Tests
+### Tests with buster.js (currently not supported)
 
 For testing, use [buster.js](http://busterjs.org/) framework. It should be installed globally, in order to work properly.
 
@@ -20,6 +20,13 @@ To run tests in console, first start *buster* server:
 Then open your browser (or even several ones) and point them to url `localhost:1111`. After browser has been captured by buster server, run:
 
     buster test
+
+### Tests with mocha
+Start server:
+
+    ./server
+
+Navigate to `localhost:8000/test`.
 
 ### Code standart
 [http://nodeguide.com/style.html](nodejs code standart)

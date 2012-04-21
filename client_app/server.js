@@ -4,11 +4,12 @@ var connect = require('connect');
 var hoganBuild = require('./hoganbuild');
 var watch = require('nodewatch');
 
-WATCHED_EXT = ['js', 'mustache'];
+var WATCHED_EXT = ['js', 'mustache'];
 
 function rebuildProject() {
   // r.js build
   var config = JSON.parse(fs.readFileSync('build.js', 'utf8'));
+  hoganBuild.run();
   requirejs.optimize(config, function buildResponse(buildResponse) {
     //buildResponse is just a text output of the modules
     //included. Load the built file for the contents.
@@ -16,7 +17,6 @@ function rebuildProject() {
     console.log(buildResponse);
   });
 
-  hoganBuild.run();
 }
 
 var timeout;
@@ -33,6 +33,9 @@ watch.add('./src', true).onChange(function watcher (fileName) {
 rebuildProject();
 var server = connect()
   .use(connect.static('public'))
+  .use('/test', connect.static('test'))
+  .use('/node_modules', 
+        connect.static('node_modules')) // use them for tests only!
   .listen(8000);
 
 console.log('Listening on 8000...');
