@@ -2,18 +2,18 @@
   <div class="span5">
     <h1>{{ band_name }}&nbsp;<small>{{status}}</small></h1>
   </div>
-  <div class="span1 offset6">
+  <div class="span2 offset5" style="text-align:right">
     <span>#3 | Rock, Ru</span>
   </div>
 </div>
 <div class="row">
   <div class="span6">
-    <span class="label">
+    <span class="label label-important">
       {{ primary_genre }}
     </span>
     {{#genres}}
       &nbsp;
-      <span class="label">
+      <span class="label label-info">
         {{.}}
       </span>
     {{/genres}}
