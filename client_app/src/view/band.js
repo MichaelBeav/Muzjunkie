@@ -30,9 +30,7 @@ define([
       },
 
       render: function renderBandView() {
-        console.log(this.$el);
         this.$el.html(tmpl.render(this.model.toJSON()));
-        console.log('rendered');
         this.trigger('ready');
         return this;
       }
