@@ -10,13 +10,17 @@ app = web.application(urls, globals())
 
 class BandController(object):
 
-    catalog = None
+    catalog = dict()
     
     def POST(self, id_):
         self.catalog[id_] = Band(*json.loads(web.data()))
+        return ''
 
     def GET(self, id_):
-        return json.dumps(self.catalog[id_])
+        try:
+            return json.dumps(self.catalog[id_])
+        except KeyError:
+            return web.notfound('message')
 
 if __name__ == '__main__':
     app.run()

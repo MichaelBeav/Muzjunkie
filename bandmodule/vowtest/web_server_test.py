@@ -1,7 +1,9 @@
 import json
-from pyvows import Vows, expect
 from bandmodule import web_server
 from bandmodule.model import Band
+
+from webtest import TestApp
+from pyvows import Vows, expect
 
 @Vows.create_assertions
 def to_contain_entry(topic, entry):
@@ -24,18 +26,24 @@ class BandController(Vows.Context):
 
         def topic(self, band_catalog):
             band = Band(id='1')
+
             def mock_data():
                 return json.dumps(band)
+            actual_data = web_server.web.data
+            # mock data function
             web_server.web.data = mock_data
+
             band_controller = web_server.BandController()
             band_controller.POST(band.id)
+
+            web_server.web.data = actual_data
             return band, band_catalog
 
         def saves_band_in_band_catalog(self, topic):
             band, band_catalog = topic
             expect(band_catalog).to_contain_entry((band.id, band))
 
-    class OnGetBand(Vows.Context):
+    class OnGetBandThatIsInCatalog(Vows.Context):
 
         def topic(self, band_catalog):
             band_id = 'band_id'
@@ -47,3 +55,12 @@ class BandController(Vows.Context):
             band, get_result = topic
             result_band = Band(*json.loads(get_result))
             expect(result_band).to_equal(band)
+    
+    class OnGetBandThatIsNotInCatalog(Vows.Context):
+
+        def topic(self, band_catalog):
+            testApp = TestApp(web_server.app.wsgifunc(*[]))
+            return testApp.get('/band/1', status='404 Not Found')
+
+        def response_status_is_404(self, response):
+            pass
