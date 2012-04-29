@@ -3,7 +3,6 @@ import json
 from model import Band
 
 class BandController(object):
-    """ Band"""
 
     catalog = None
     

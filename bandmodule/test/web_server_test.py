@@ -13,7 +13,7 @@ def to_contain_entry(topic, entry):
     return key in topic and topic[key] == value
 
 @Vows.batch
-class BandHandler(Vows.Context):
+class BandController(Vows.Context):
 
     def topic(self):
         band_catalog = dict()
