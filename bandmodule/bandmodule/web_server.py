@@ -1,5 +1,5 @@
 import web
-import json
+import simplejson as json
 from model import Band
 
 urls = (
@@ -18,8 +18,8 @@ class BandController(object):
         return ''
 
     def GET(self, id_):
+        web.header('Content-Type', 'application/json')
         try:
-            web.header('Content-Type', 'application/json')
             return json.dumps(self.catalog[id_])
         except KeyError:
             return web.notfound('message')
