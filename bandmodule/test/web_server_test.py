@@ -1,7 +1,7 @@
 import simplejson as json
 from bandmodule import web_server
 from bandmodule.model import Band
-from bandmodule.transform import dict_to_band
+from bandmodule.transform import dict_to_band, band_to_dict
 
 from webtest import TestApp
 from nose.tools import assert_in, assert_equals
@@ -22,7 +22,7 @@ class TestBandController(object):
 
     def on_post_saves_band_in_catalog_test(self):
         band = Band(id='1')
-        self.app.post_json('/band/1', band)
+        self.app.post('/band/1', json.dumps(band, default=band_to_dict))
         assert_in(band.id, self.band_catalog)
         assert_equals(band, self.band_catalog[band.id])
 
