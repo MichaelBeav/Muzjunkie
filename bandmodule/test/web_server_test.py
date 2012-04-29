@@ -35,4 +35,5 @@ class TestBandController(object):
         res = json.loads(response.body)
         assert_equals(Band(*res), band)
 
-
+    def on_get_status_is_not_found_if_band_not_found_test(self):
+       self.app.get('/band/non-existing-id', status=404)
