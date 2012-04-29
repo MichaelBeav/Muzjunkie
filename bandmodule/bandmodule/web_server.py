@@ -19,6 +19,7 @@ class BandController(object):
 
     def GET(self, id_):
         try:
+            web.header('Content-Type', 'application/json')
             return json.dumps(self.catalog[id_])
         except KeyError:
             return web.notfound('message')
