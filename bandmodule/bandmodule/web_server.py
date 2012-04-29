@@ -14,6 +14,7 @@ class BandController(object):
     
     def POST(self, id_):
         self.catalog[id_] = Band(*json.loads(web.data()))
+        web.header('Content-Type', 'text/plain')
         return ''
 
     def GET(self, id_):
