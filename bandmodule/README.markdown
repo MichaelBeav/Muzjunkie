@@ -1,13 +1,12 @@
 ## Run Requirements
 
-*   [web.py](http://webpy.org/) WCGI implementation
+*   [web.py](http://webpy.org/) WSGI implementation
 
         pip install web.py
 
 ## Test Requirements
 
 *   [nosetest](http://readthedocs.org/docs/nose/en/latest/) for testing (with [yanc](http://pypi.python.org/pypi/yanc/) for coloring)
-
 
         pip install nose yanc
 
