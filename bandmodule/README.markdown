@@ -1,14 +1,8 @@
-## Run Requirements
+## Requirements
 
-*   [web.py](http://webpy.org/) WSGI implementation
+To set up all requirements, use [pip](http://www.pip-installer.org/en/latest/index.html):
 
-        pip install web.py
-
-## Test Requirements
-
-*   [nosetest](http://readthedocs.org/docs/nose/en/latest/) for testing (with [yanc](http://pypi.python.org/pypi/yanc/) for coloring)
-
-        pip install nose yanc
+    pip install -r requirements.txt
 
 ## Usage
 
@@ -19,7 +13,7 @@ To try it out, simply start the module, by running:
 And then use `curl`:
 
     curl -XPOST http://localhost:8080/band/MegaBand -d '{
-    id : MegaBand
+    name : MegaBand
     }'
 
     curl -XGET http://localhost:8080/band/MegaBand
