@@ -12,7 +12,7 @@ To try it out, start the module, by running:
 
     $ python bandmodule/web_server.py
 
-Start redis (or replace `BandCatalog()` with a `dict()` in *web_server.py*:
+Start redis (or replace `BandCatalog()` with a `dict()` in *web_server.py*):
 
     $ redis-server
 
