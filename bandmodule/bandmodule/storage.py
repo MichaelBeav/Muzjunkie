@@ -1,4 +1,5 @@
 import redis
+import pickle
 
 class BandCatalog(object):
 
@@ -7,4 +8,7 @@ class BandCatalog(object):
                                                  port=6379, db=0)
 
     def __getitem__(self, item):
-        return self._redis_instance.get(item)
+        return pickle.loads(self._redis_instance.get(item))
+
+    def __setitem__(self, item, value):
+        return self._redis_instance.set(item, pickle.dumps(value))
