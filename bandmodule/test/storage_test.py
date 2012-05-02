@@ -9,6 +9,7 @@ from bandmodule.storage import BandCatalog
 class TestBandCatalog(object):
 
     def setup(self):
+        # patcher mocks all methods of the class
         self.patcher = patch('redis.StrictRedis')
         self.redis_mock = self.patcher.start().return_value
 

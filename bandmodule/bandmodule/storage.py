@@ -2,6 +2,12 @@ import redis
 import pickle
 
 class BandCatalog(object):
+    """
+    Redis-based implementation of band catalog.
+    Usage:
+        band_catalog['key'] = value   # stores value under given key
+        value = band_catalog['key']   # retrieves value
+    """
 
     def __init__(self):
         self._redis_instance = redis.StrictRedis(host='localhost',
