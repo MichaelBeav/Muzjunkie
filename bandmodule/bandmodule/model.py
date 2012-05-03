@@ -16,11 +16,15 @@ _band_fields = {
         'raider': '',
         'rid' : '', }
 
+# Named tuple is used because of lightness,
+# immutability and out-of-the-box functionality
+# like __str__, _asdict .. etc
 Band = namedtuple('Band', _band_fields.keys())
 
 def create_band(**kwargs):
-    """ Factory method for creating
-    partially field `Band`. Fields, that are not
+    """
+    Factory method for creating
+    partially filled `Band`. Fields, that are not
     given in kwargs, are set do default
     """
 
