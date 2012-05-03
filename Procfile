@@ -1,1 +1,1 @@
-python: bandmodule/bandmodule/web_server.py
+web: python bandmodule/bandmodule/web_server.py
