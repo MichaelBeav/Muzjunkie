@@ -26,6 +26,10 @@ Start server:
 
     ./server
 
+You will need to create 2 directories for the first time:
+
+    mkdir public/build public/build/template
+
 Navigate to `localhost:8000/test`.
 
 ### Code standart
