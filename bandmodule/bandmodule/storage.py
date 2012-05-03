@@ -1,5 +1,7 @@
 import redis
 import pickle
+import os, urlparse
+
 
 class BandCatalog(object):
     """
@@ -10,8 +12,15 @@ class BandCatalog(object):
     """
 
     def __init__(self):
-        self._redis_instance = redis.StrictRedis(host='localhost',
-                                                 port=6379, db=0)
+        if os.environ.has_key('REDISTOGO_URL'):
+            urlparse.uses_netloc.append('redis')
+            url = urlparse.urlparse(os.environ['REDISTOGO_URL'])
+            self._redis_instance = redis.Redis(host=url.hostname,
+                                               port=url.port, db=0,
+                                               password=url.password)
+        else:
+            self._redis_instance = redis.StrictRedis(host='localhost',
+                                                     port=6379, db=0)
 
     def __getitem__(self, item):
         return pickle.loads(self._redis_instance.get(item))
