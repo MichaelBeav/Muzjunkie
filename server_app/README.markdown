@@ -20,8 +20,9 @@ And then use `curl`:
 
     $ curl -XPOST http://localhost:8080/band/MegaBand -d '{
       "name" : "MegaBand",
-      "primary_genre: ""salsa",
-      "genres": ["avokado-dance", "g"]
+      "primary_genre": "salsa",
+      "genres": [ "avokado-dance", "g" ],
+      "members": [ "Vasiliy!", "Stopka", "Lars Ulrich" ]
     }'
  
     $ curl -XGET http://localhost:8080/band/MegaBand
