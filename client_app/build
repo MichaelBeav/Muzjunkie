@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+./node_modules/requirejs/bin/r.js -o build.js
+echo 'var h = require("./hoganbuild"); h.run();' | node
+

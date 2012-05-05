@@ -1,0 +1,4 @@
+*.swp
+*.pyc
+client_app/node_modules
+client_app/public/build*
