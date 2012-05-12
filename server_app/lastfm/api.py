@@ -28,8 +28,8 @@ def create_session():
                                             token=token,
                                             api_key=API_KEY)
     
+    session_req_url += '&format=json' # format should not be in api_sig
     print(session_req_url)
-
     session_response = urllib2.urlopen(session_req_url)
 
     print(session_response.read())
