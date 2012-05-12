@@ -1,7 +1,7 @@
 import web
 
 import transform
-from storage import BandCatalog
+from storage import RedisBandCatalog as BandCatalog
 
 urls = (
     '/band/(.*)', 'BandController'        

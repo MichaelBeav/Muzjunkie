@@ -1,12 +1,14 @@
 import pickle
-from nose.tools import assert_equals
+from nose.tools import assert_equals, assert_raises
 from mock import patch
 
 from bandmodule.model import create_band
-from bandmodule.storage import BandCatalog
+from bandmodule.storage import RedisBandCatalog
 
+def catalog():
+    return RedisBandCatalog()
 
-class TestBandCatalog(object):
+class TestRedisBandCatalog(object):
 
     def setup(self):
         # patcher mocks all methods of the class
@@ -18,20 +20,25 @@ class TestBandCatalog(object):
 
     @patch('pickle.loads')
     def getitem_calls_redis_get_test(self, loads_mock):
-        BandCatalog()['BandKey']
+        catalog()['BandKey']
         self.redis_mock.get.assert_called_once_with('BandKey')
 
     def getitem_deserializes_result_test(self):
         band = create_band(name='Metalizer')
         self.redis_mock.get.return_value = pickle.dumps(band)
-        assert_equals(band, BandCatalog()['AnyKey'])
+        assert_equals(band, catalog()['AnyKey'])
 
     def setitem_calls_redis_set_test(self):
-        BandCatalog()['BandKey'] = 'anything'
+        catalog()['BandKey'] = 'anything'
         assert_equals(1, self.redis_mock.set.call_count)
 
     def setitem_serializes_value_test(self):
         band = create_band(name='BandName')
-        BandCatalog()['BandKey'] = band
+        catalog()['BandKey'] = band
         self.redis_mock.set.assert_called_once_with('BandKey',
                                             pickle.dumps(band))
+
+    def raises_key_error_if_record_not_found_in_redis_test(self):
+        self.redis_mock.get.return_value = None
+        with assert_raises(KeyError):
+            catalog()['will_return_none']
