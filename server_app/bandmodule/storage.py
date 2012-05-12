@@ -3,7 +3,7 @@ import pickle
 import os, urlparse
 
 
-class BandCatalog(object):
+class RedisBandCatalog(object):
     """
     Redis-based implementation of band catalog.
     Usage:
@@ -23,7 +23,10 @@ class BandCatalog(object):
                                                      port=6379, db=0)
 
     def __getitem__(self, item):
-        return pickle.loads(self._redis_instance.get(item))
+        band_serialized = self._redis_instance.get(item)
+        if band_serialized:
+            return pickle.loads(band_serialized)
+        raise KeyError('Band with key "{}" not found'.format(item))
 
     def __setitem__(self, item, value):
         return self._redis_instance.set(item, pickle.dumps(value))
