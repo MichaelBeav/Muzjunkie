@@ -18,11 +18,15 @@ def create_session():
                    .format(ROOT_URL, API_KEY))
     token = json.loads(token_response.read())['token']
 
+    webbrowser.open('http://www.last.fm/api/auth/?api_key={}&token={}'
+                    .format(API_KEY, token))
+    print('authorize request in your browser, then press any key')
+    raw_input()
+
     session_req_url = _make_signed_request_url(
                                             method='auth.getsession',
                                             token=token,
-                                            api_key=API_KEY,
-                                            format='json')
+                                            api_key=API_KEY)
     
     print(session_req_url)
 
@@ -31,11 +35,6 @@ def create_session():
     print(session_response.read())
     raw_input()
     
-    webbrowser.open('http://www.last.fm/api/auth/?api_key={}&token={}'
-                    .format(API_KEY, token))
-    print('authorize request in your browser, then press any key')
-    raw_input()
-
 def _make_signed_request_url(**kwargs):
     md5 = hashlib.md5()
     url = ROOT_URL[:] + '?'
