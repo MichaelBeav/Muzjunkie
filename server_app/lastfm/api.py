@@ -70,4 +70,10 @@ def _make_signed_request_url(**kwargs):
     
 
 if __name__ == '__main__':
-    print(create_session())
+    username, session_key = create_session()
+    top_artists_str = urllib2.urlopen(_make_request_url(
+        method='user.getTopArtists',
+        user=username,
+        api_key=API_KEY)).read()
+    top_artists_dict = json.loads(top_artists_str)
+    print(top_artists_dict)
