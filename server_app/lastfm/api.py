@@ -15,7 +15,8 @@ def create_session():
             # session is already opened
             username = session_file.readline()
             key_str = session_file.readline()
-            return username, key_str
+            if username and key_str:
+                return username, key_str
     except IOError: # file doesn't exist
         pass
 
@@ -26,9 +27,9 @@ def create_session():
             proxy = urllib2.ProxyHandler({'http': environ['http_proxy']})
             opener = urllib2.build_opener(proxy)
             urllib2.install_opener(opener)
-        token_response = urllib2.urlopen(
-                       '{}?method=auth.gettoken&api_key={}&format=json'
-                       .format(ROOT_URL, API_KEY))
+
+        token_url = _make_request_url(method='auth.gettoken', api_key=API_KEY)
+        token_response = urllib2.urlopen(token_url)
         token = json.loads(token_response.read())['token']
 
         webbrowser.open('http://www.last.fm/api/auth/?api_key={}&token={}'
@@ -52,17 +53,22 @@ def create_session():
         session_file.write(name + '\n')
         session_file.write(key + '\n')
         return name, key
+
+def _make_request_url(**kwargs):
+    url = ROOT_URL[:] + '?'
+    for key, val in kwargs.items():
+        url += '{}={}&'.format(key, val)
+    url += 'format=json'
+    return url
+
     
 def _make_signed_request_url(**kwargs):
     md5 = hashlib.md5()
-    url = ROOT_URL[:] + '?'
     for key in sorted(kwargs):
-        url += '{}={}&'.format(key, kwargs[key])
         md5.update('{}{}'.format(key, kwargs[key]))
     md5.update(SECRET)
-    url += 'api_sig={}'.format(md5.hexdigest())
-    url += '&format=json' # format should not be in api_sig
-    return url
+    kwargs['api_sig'] = md5.hexdigest()
+    return _make_request_url(**kwargs)
     
 
 if __name__ == '__main__':
