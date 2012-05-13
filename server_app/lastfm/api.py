@@ -9,12 +9,17 @@ ROOT_URL = 'http://ws.audioscrobbler.com/2.0/'
 SECRET = 'c88dd553de237cdabffb06d4d82e9207'
 
 def create_session():
-    with open(environ['HOME'] + '/.lastfmsession', 'r+w') as session_file:
+    try:
+        with open(environ['HOME'] + '/.lastfmsession', 'r') as session_file:
 
-        # session is already opened
-        key_str = session_file.readline()
-        if key_str:
-            return key_str
+            # session is already opened
+            username = session_file.readline()
+            key_str = session_file.readline()
+            return username, key_str
+    except IOError: # file doesn't exist
+        pass
+
+    with open(environ['HOME'] + '/.lastfmsession', 'w') as session_file:
 
         # session is not opened -> open
         if 'htt_proxy' in environ:
@@ -28,7 +33,7 @@ def create_session():
 
         webbrowser.open('http://www.last.fm/api/auth/?api_key={}&token={}'
                         .format(API_KEY, token))
-        print('authorize request in your browser, then press any key')
+        print('Authorize request in your browser, then press Enter')
         raw_input()
 
         session_req_url = _make_signed_request_url(
@@ -36,15 +41,17 @@ def create_session():
                                                 token=token,
                                                 api_key=API_KEY)
         
-        session_req_url += '&format=json' # format should not be in api_sig
         print(session_req_url)
         session_response = urllib2.urlopen(session_req_url)
 
         response_dict = json.loads(session_response.read())
         print(response_dict)
+
         key = response_dict['session']['key']
+        name = response_dict['session']['name']
+        session_file.write(name + '\n')
         session_file.write(key + '\n')
-        return key
+        return name, key
     
 def _make_signed_request_url(**kwargs):
     md5 = hashlib.md5()
@@ -54,6 +61,7 @@ def _make_signed_request_url(**kwargs):
         md5.update('{}{}'.format(key, kwargs[key]))
     md5.update(SECRET)
     url += 'api_sig={}'.format(md5.hexdigest())
+    url += '&format=json' # format should not be in api_sig
     return url
     
 
