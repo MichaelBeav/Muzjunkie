@@ -42,11 +42,9 @@ def create_session():
                                                 token=token,
                                                 api_key=API_KEY)
         
-        print(session_req_url)
         session_response = urllib2.urlopen(session_req_url)
 
         response_dict = json.loads(session_response.read())
-        print(response_dict)
 
         key = response_dict['session']['key']
         name = response_dict['session']['name']
