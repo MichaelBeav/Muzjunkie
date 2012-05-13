@@ -9,31 +9,42 @@ ROOT_URL = 'http://ws.audioscrobbler.com/2.0/'
 SECRET = 'c88dd553de237cdabffb06d4d82e9207'
 
 def create_session():
-    if 'htt_proxy' in environ:
-        proxy = urllib2.ProxyHandler({'http': environ['http_proxy']})
-        opener = urllib2.build_opener(proxy)
-        urllib2.install_opener(opener)
-    token_response = urllib2.urlopen(
-                   '{}?method=auth.gettoken&api_key={}&format=json'
-                   .format(ROOT_URL, API_KEY))
-    token = json.loads(token_response.read())['token']
+    with open(environ['HOME'] + '/.lastfmsession', 'r+w') as session_file:
 
-    webbrowser.open('http://www.last.fm/api/auth/?api_key={}&token={}'
-                    .format(API_KEY, token))
-    print('authorize request in your browser, then press any key')
-    raw_input()
+        # session is already opened
+        key_str = session_file.readline()
+        if key_str:
+            return key_str
 
-    session_req_url = _make_signed_request_url(
-                                            method='auth.getsession',
-                                            token=token,
-                                            api_key=API_KEY)
-    
-    session_req_url += '&format=json' # format should not be in api_sig
-    print(session_req_url)
-    session_response = urllib2.urlopen(session_req_url)
+        # session is not opened -> open
+        if 'htt_proxy' in environ:
+            proxy = urllib2.ProxyHandler({'http': environ['http_proxy']})
+            opener = urllib2.build_opener(proxy)
+            urllib2.install_opener(opener)
+        token_response = urllib2.urlopen(
+                       '{}?method=auth.gettoken&api_key={}&format=json'
+                       .format(ROOT_URL, API_KEY))
+        token = json.loads(token_response.read())['token']
 
-    print(session_response.read())
-    raw_input()
+        webbrowser.open('http://www.last.fm/api/auth/?api_key={}&token={}'
+                        .format(API_KEY, token))
+        print('authorize request in your browser, then press any key')
+        raw_input()
+
+        session_req_url = _make_signed_request_url(
+                                                method='auth.getsession',
+                                                token=token,
+                                                api_key=API_KEY)
+        
+        session_req_url += '&format=json' # format should not be in api_sig
+        print(session_req_url)
+        session_response = urllib2.urlopen(session_req_url)
+
+        response_dict = json.loads(session_response.read())
+        print(response_dict)
+        key = response_dict['session']['key']
+        session_file.write(key + '\n')
+        return key
     
 def _make_signed_request_url(**kwargs):
     md5 = hashlib.md5()
@@ -47,4 +58,4 @@ def _make_signed_request_url(**kwargs):
     
 
 if __name__ == '__main__':
-    create_session()
+    print(create_session())
