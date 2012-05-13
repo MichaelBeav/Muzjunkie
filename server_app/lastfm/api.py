@@ -13,8 +13,8 @@ def create_session():
         with open(environ['HOME'] + '/.lastfmsession', 'r') as session_file:
 
             # session is already opened
-            username = session_file.readline()
-            key_str = session_file.readline()
+            username = session_file.readline()[:-1]
+            key_str = session_file.readline()[:-1]
             if username and key_str:
                 return username, key_str
     except IOError: # file doesn't exist
