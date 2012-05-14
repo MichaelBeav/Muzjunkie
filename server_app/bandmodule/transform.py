@@ -18,3 +18,16 @@ def band_to_json(band):
 
 def json_to_band(js):
     return json.loads(js, object_hook=dict_to_band)
+
+def lastfm_artist_to_band(artist):
+    band_dict = {}
+    artist = artist['artist']
+    band_dict['name'] = artist['name']
+    band_dict['primary_genre'] = artist['tags']['tag'][0]['name']
+    band_dict['genres'] = map(
+            lambda tag: tag['name'],
+            artist['tags']['tag'][1:4])
+
+    band_dict['bio'] = artist['bio']['summary']
+    return create_band(**band_dict)
+
