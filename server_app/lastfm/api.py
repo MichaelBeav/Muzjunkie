@@ -1,5 +1,6 @@
 import hashlib
 import urllib
+import urllib2
 import simplejson as json
 import webbrowser
 from os import environ
@@ -23,11 +24,6 @@ def create_session():
     with open(environ['HOME'] + '/.lastfmsession', 'w') as session_file:
 
         # session is not opened -> open
-        if 'htt_proxy' in environ:
-            proxy = urllib.ProxyHandler({'http': environ['http_proxy']})
-            opener = urllib.build_opener(proxy)
-            urllib.install_opener(opener)
-
         token_url = _make_request_url(method='auth.gettoken', api_key=API_KEY)
         token_response = urllib.urlopen(token_url)
         token = json.loads(token_response.read())['token']
@@ -42,7 +38,7 @@ def create_session():
                                                 token=token,
                                                 api_key=API_KEY)
         
-        session_response = urllib.urlopen(session_req_url)
+        session_response = urllib2.urlopen(session_req_url)
 
         response_dict = json.loads(session_response.read())
 
@@ -51,6 +47,13 @@ def create_session():
         session_file.write(name + '\n')
         session_file.write(key + '\n')
         return name, key
+
+def get_top_artists_for_user(username):
+    top_artists_str = urllib2.urlopen(_make_request_url(
+        method='user.getTopArtists',
+        user=username,
+        api_key=API_KEY)).read()
+    return json.loads(top_artists_str)
 
 def _make_request_url(**kwargs):
     url = ROOT_URL[:] + '?'
@@ -71,9 +74,5 @@ def _make_signed_request_url(**kwargs):
 
 if __name__ == '__main__':
     username, session_key = create_session()
-    top_artists_str = urllib.urlopen(_make_request_url(
-        method='user.getTopArtists',
-        user=username,
-        api_key=API_KEY)).read()
-    top_artists_dict = json.loads(top_artists_str)
+    top_artists_dict = get_top_artists_for_user(username)
     print(top_artists_dict['topartists']['artist'][0])
