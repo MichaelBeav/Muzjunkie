@@ -1,5 +1,5 @@
 import hashlib
-import urllib2
+import urllib
 import simplejson as json
 import webbrowser
 from os import environ
@@ -24,12 +24,12 @@ def create_session():
 
         # session is not opened -> open
         if 'htt_proxy' in environ:
-            proxy = urllib2.ProxyHandler({'http': environ['http_proxy']})
-            opener = urllib2.build_opener(proxy)
-            urllib2.install_opener(opener)
+            proxy = urllib.ProxyHandler({'http': environ['http_proxy']})
+            opener = urllib.build_opener(proxy)
+            urllib.install_opener(opener)
 
         token_url = _make_request_url(method='auth.gettoken', api_key=API_KEY)
-        token_response = urllib2.urlopen(token_url)
+        token_response = urllib.urlopen(token_url)
         token = json.loads(token_response.read())['token']
 
         webbrowser.open('http://www.last.fm/api/auth/?api_key={}&token={}'
@@ -42,7 +42,7 @@ def create_session():
                                                 token=token,
                                                 api_key=API_KEY)
         
-        session_response = urllib2.urlopen(session_req_url)
+        session_response = urllib.urlopen(session_req_url)
 
         response_dict = json.loads(session_response.read())
 
@@ -54,9 +54,9 @@ def create_session():
 
 def _make_request_url(**kwargs):
     url = ROOT_URL[:] + '?'
-    for key, val in kwargs.items():
-        url += '{}={}&'.format(key, val)
-    url += 'format=json'
+    kwargs['format'] = 'json'
+    url += urllib.urlencode(kwargs)
+    print(url)
     return url
 
     
@@ -71,9 +71,9 @@ def _make_signed_request_url(**kwargs):
 
 if __name__ == '__main__':
     username, session_key = create_session()
-    top_artists_str = urllib2.urlopen(_make_request_url(
+    top_artists_str = urllib.urlopen(_make_request_url(
         method='user.getTopArtists',
         user=username,
         api_key=API_KEY)).read()
     top_artists_dict = json.loads(top_artists_str)
-    print(top_artists_dict)
+    print(top_artists_dict['topartists']['artist'][0])
