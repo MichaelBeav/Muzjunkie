@@ -49,11 +49,18 @@ def create_session():
         return name, key
 
 def get_top_artists_for_user(username):
-    top_artists_str = urllib2.urlopen(_make_request_url(
-        method='user.getTopArtists',
-        user=username,
-        api_key=API_KEY)).read()
-    return json.loads(top_artists_str)
+    return _call_lastfm_api('user.getTopArtists', user=username)
+
+def get_artist_info(artist_name):
+    return _call_lastfm_api('artist.getInfo', artist=artist_name)
+
+def _call_lastfm_api(method_name, **method_args):
+    method_args['api_key'] = API_KEY
+    method_args['method'] = method_name
+    url = _make_request_url(**method_args)
+    response_str = urllib2.urlopen(url).read()
+    return json.loads(response_str)
+
 
 def _make_request_url(**kwargs):
     url = ROOT_URL[:] + '?'
@@ -76,3 +83,4 @@ if __name__ == '__main__':
     username, session_key = create_session()
     top_artists_dict = get_top_artists_for_user(username)
     print(top_artists_dict['topartists']['artist'][0])
+    print(get_artist_info('The Mars Volta'))
