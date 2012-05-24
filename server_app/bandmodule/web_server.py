@@ -1,4 +1,5 @@
 import web
+import urllib
 
 import transform
 from storage import RedisBandCatalog as BandCatalog
@@ -29,7 +30,7 @@ class BandController(object):
         """
         web.header('Content-Type', 'application/json')
         try:
-            band = self.catalog[id_]
+            band = self.catalog[urllib.unquote_plus(id_)]
             return transform.band_to_json(band)
         except KeyError:
             return web.notfound('Band {} not found'.format(id_))

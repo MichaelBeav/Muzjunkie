@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*- 
 import hashlib
 import urllib
 import urllib2
@@ -52,7 +53,11 @@ def get_top_artists_for_user(username):
     return _call_lastfm_api('user.getTopArtists', user=username)
 
 def get_artist_info(artist_name):
-    return _call_lastfm_api('artist.getInfo', artist=artist_name)
+    print('Getting ' + artist_name)
+    return _call_lastfm_api(
+            'artist.getInfo',
+             # workaround, non-ascii chars not supported..
+            artist=artist_name.encode('utf-8'))
 
 def _call_lastfm_api(method_name, **method_args):
     method_args['api_key'] = API_KEY

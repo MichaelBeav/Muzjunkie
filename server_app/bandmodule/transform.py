@@ -29,5 +29,14 @@ def lastfm_artist_to_band(artist):
             artist['tags']['tag'][1:4])
 
     band_dict['bio'] = artist['bio']['summary']
-    return create_band(**band_dict)
 
+    img_list = artist['image']
+    band_dict['avatar'] = filter(
+            lambda d: d['size'] == 'extralarge',
+            img_list)[0]['#text']
+
+    band_dict['similar_artists'] = map(
+            lambda a: a['name'],
+            artist['similar']['artist'])
+
+    return create_band(**band_dict)
